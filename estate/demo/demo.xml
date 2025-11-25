@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <record id="house_1" model="real.estate">
+            <field name="name">Cozy Cottage</field>
+            <field name="price">250000.00</field>
+        </record>
+        <record id="house_2" model="real.estate">
+            <field name="name">Modern Apartment</field>
+            <field name="price">350000.00</field>
+        </record>
+    </data>  
+</odoo>

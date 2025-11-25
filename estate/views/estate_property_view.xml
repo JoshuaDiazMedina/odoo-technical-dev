@@ -1,0 +1,97 @@
+<odoo>
+    <record id="property_record" model="ir.actions.act_window">
+        <field name="name">Test</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+
+    
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" filter_domain="[('name','ilike',self)]"/>
+                <field name="state" invisible="1"/>
+                <field name="property_type_id"/>  
+                <filter name="filter_state_name" string="New" domain="[('state','=','new')]"/>
+                <filter name="group_by_type" string="Group by type" context="{'group_by':'property_type_id'}"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
+            </search>
+        </field>
+    </record>
+
+
+
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="state"/>
+                <field name="price"/>
+                <field name="property_type_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_set_sold" string="Sold" type="object" invisible="state in ('sold','canceled')"/>    
+                    <button name="action_set_canceled" string="Canceled" type="object" invisible="state in ('sold','canceled')"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="state"/>
+                        <field name="price"/>
+                        <field name="availability_date"/>
+                        <field name="bedrooms"/>
+                        <field name="active"/>
+                        <field name="property_type_id"/>
+                        <field name="selling_price"/>
+                    </group>
+                    <notebook>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" nolabel="1">
+                                    <list>
+                                        <field name="price"/>
+                                        <field name="status"/>
+                                        <field name="partner_id"/>
+                                    </list>
+                                </field> 
+                            </group>
+                            <group>
+                                <field name="best_price" readonly="1"/>
+                            </group> 
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="tag_ids" widget="many2many_tags"/>
+                                <field name="living_area"/>
+                                <field name="garden"/>
+                                <field name="garden_orientation" widget="radio" invisible="not garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string="Sales Info">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
